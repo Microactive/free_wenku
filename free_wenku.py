@@ -1,7 +1,9 @@
 import requests
 import tkinter as tk
 from tkinter import messagebox  # import this to fix messagebox error
+import threading  # 引入多线程，使程序能同时进行爬虫和进度条显示
 import time
+
 
 # 创建主窗口
 window = tk.Tk()
@@ -26,8 +28,8 @@ canvas = tk.Canvas(window, width=465, height=22, bg="white")
 #out_line = canvas.create_rectangle(1.5, 1.5, 465, 23, width=0.4, outline="green")
 canvas.place(x=110, y=110)
 
-# 进度显示
-def click():
+# 显示下载进度
+def progress():
     # 填充进度条
     fill_line = canvas.create_rectangle(1.5, 1.5, 0, 23, width=0, fill="blue")
     x = 500  # 未知变量，可更改
@@ -40,25 +42,24 @@ def click():
         window.update()
         time.sleep(0.02)  # 控制进度条流动的速度
 
-
-    # 清空进度条
-    fill_line = canvas.create_rectangle(1.5, 1.5, 0, 23, width=0, fill="white")
-    x = 500  # 未知变量，可更改
-    n = 465 / x  # 465是矩形填充满的次数
-
-    for t in range(x):
-        n = n + 465 / x
-        # 以矩形的长度作为变量值更新
-        canvas.coords(fill_line, (0, 0, n, 60))
-        window.update()
-        time.sleep(0.00000000002)  # 控制进度条流动的速度
+    # # 清空进度条
+    # fill_line = canvas.create_rectangle(1.5, 1.5, 0, 23, width=0, fill="white")
+    # x = 500  # 未知变量，可更改
+    # n = 465 / x  # 465是矩形填充满的次数
+    #
+    # for t in range(x):
+    #     n = n + 465 / x
+    #     # 以矩形的长度作为变量值更新
+    #     canvas.coords(fill_line, (0, 0, n, 60))
+    #     window.update()
+    #     time.sleep(0)  # 时间为0，即飞速清空进度条
 
 # 清空框内的文档链接
 def clear_url():
     entry_doc_url.delete(0, tk.END)
 
 # 下载文档
-def download():
+def download_doc():
     # 获取输入的文档链接和邮箱
     doc_url = str(var_doc_url.get())
     mailbox = str(var_mailbox.get())
@@ -91,16 +92,27 @@ def download():
     # 爬虫访问该漏洞，提交携带的数据
     response = requests.request("POST", url, data=datas, headers=header)
 
+threads = []
+t1 = threading.Thread(target=progress)
+threads.append(t1)
+t2 = threading.Thread(target=download_doc)
+threads.append(t2)
+
+# 双线程
+def two_threading():
+    for t in threads:
+        t.setDaemon(True)
+        t.start()
+    t.join()
+
     tk.messagebox.showinfo(  # 通知型弹窗
         title='下载成功',  # 窗口标题
-        message='文档已发送，邮箱可能会对其进行拦截，请注意查看垃圾箱',
-    )
-
+        message='文档已发送，邮箱可能会对其进行拦截，请注意查看垃圾箱',)
 
 # 设置清空链接和一键下载按钮
 btn_clear = tk.Button(window, text='清空链接', command=clear_url)
 btn_clear.place(x=150, y=150)
-btn_download = tk.Button(window, text='一键下载', command=click)
+btn_download = tk.Button(window, text='一键下载', command=two_threading)
 btn_download.place(x=400, y=150)
 
 window.mainloop()
