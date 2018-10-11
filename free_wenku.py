@@ -10,8 +10,8 @@ window.geometry('600x200')
 # 设置文档链接输入框
 tk.Label(window, text='文档链接:').place(x=50, y=30)
 var_doc_url = tk.StringVar()  # 定义变量,用于输入用户名
-entry_doc_url = tk.Entry(window, width=60, textvariable=var_doc_url).place(x=110, y=30)
-
+entry_doc_url = tk.Entry(window, width=60, textvariable=var_doc_url)
+entry_doc_url.place(x=110, y=30)
 
 # 设置邮箱输入框
 tk.Label(window, text='收件邮箱:').place(x=50, y=70)
@@ -61,12 +61,10 @@ def download():
 
     print('下载成功')
 
-
 # 设置清空链接和一键下载按钮
 btn_clear = tk.Button(window, text='清空链接', command=clear_url)
 btn_clear.place(x=150, y=150)
 btn_download = tk.Button(window, text='一键下载', command=download)
 btn_download.place(x=400, y=150)
-
 
 window.mainloop()
