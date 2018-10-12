@@ -35,7 +35,7 @@ var_mailbox.set('2280674798@qq.com')
 entry_mailbox = tk.Entry(window, width=66, textvariable=var_mailbox).place(x=110, y=220)
 
 # # 设置下载进度条
-tk.Label(window, text='下载进度:').place(x=50, y=260)
+tk.Label(window, text='下载进度:', ).place(x=50, y=260)
 canvas = tk.Canvas(window, width=465, height=22, bg="white")
 canvas.place(x=110, y=260)
 
@@ -111,6 +111,11 @@ threads.append(t2)
 
 # 双线程
 def two_threading():
+    threads = []
+    t1 = threading.Thread(target=progress)
+    threads.append(t1)
+    t2 = threading.Thread(target=download_doc)
+    threads.append(t2)
 
     for t in threads:
         t.setDaemon(True)
