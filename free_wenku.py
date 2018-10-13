@@ -7,37 +7,32 @@ import time
 
 # 创建主窗口
 window = tk.Tk()
-window.title('百度文库下载神器(牛牛定制版)')
-window.geometry('630x350')
+window.title('百度文库下载神器')
+window.geometry('630x250')
 
 
 # 添加背景图
 canvas = tk.Canvas(window, height=200, width=600)  # 创建画布
-image_file1 = tk.PhotoImage(file='pic1.png')  # 加载图片文件
-image = canvas.create_image(230, 20, anchor='nw', image=image_file1)  # 将图片置于画布上
-image_file2 = tk.PhotoImage(file='pic2.png')  # 加载图片文件
-image = canvas.create_image(310, 25, anchor='nw', image=image_file2)  # 将图片置于画布上
-image_file3 = tk.PhotoImage(file='logo.png')  # 加载图片文件
-image = canvas.create_image(130, 120, anchor='nw', image=image_file3)  # 将图片置于画布上
+image_file = tk.PhotoImage(file='logo.png')  # 加载图片文件
+image = canvas.create_image(130, 20, anchor='nw', image=image_file)  # 将图片置于画布上
 canvas.pack()  # 放置画布
 
 
 # 设置文档链接输入框
-tk.Label(window, text='文档链接:').place(x=50, y=180)
+tk.Label(window, text='文档链接:').place(x=50, y=80)
 var_doc_url = tk.StringVar()  # 定义变量,用于输入用户名
 entry_doc_url = tk.Entry(window, width=66, textvariable=var_doc_url)
-entry_doc_url.place(x=110, y=180)
+entry_doc_url.place(x=110, y=80)
 
 # 设置邮箱输入框
-tk.Label(window, text='收件邮箱:').place(x=50, y=220)
+tk.Label(window, text='收件邮箱:').place(x=50, y=120)
 var_mailbox = tk.StringVar()  # 定义变量,用于输入用户名
-var_mailbox.set('1653595684@qq.com')
-entry_mailbox = tk.Entry(window, width=66, textvariable=var_mailbox).place(x=110, y=220)
+entry_mailbox = tk.Entry(window, width=66, textvariable=var_mailbox).place(x=110, y=120)
 
 # # 设置下载进度条
-tk.Label(window, text='下载进度:', ).place(x=50, y=260)
+tk.Label(window, text='下载进度:', ).place(x=50, y=160)
 canvas = tk.Canvas(window, width=465, height=22, bg="white")
-canvas.place(x=110, y=260)
+canvas.place(x=110, y=160)
 
 # 显示下载进度
 def progress():
@@ -135,8 +130,8 @@ def two_threading():
 
 # 设置清空链接和一键下载按钮
 btn_clear = tk.Button(window, text='清空链接', command=clear_url)
-btn_clear.place(x=150, y=305)
+btn_clear.place(x=150, y=205)
 btn_download = tk.Button(window, text='一键下载', command=check)
-btn_download.place(x=400, y=305)
+btn_download.place(x=400, y=205)
 
 window.mainloop()
