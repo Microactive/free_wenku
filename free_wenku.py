@@ -24,15 +24,18 @@ var_doc_url = tk.StringVar()  # 定义变量,用于输入用户名
 entry_doc_url = tk.Entry(window, width=66, textvariable=var_doc_url)
 entry_doc_url.place(x=110, y=80)
 
+
 # 设置邮箱输入框
 tk.Label(window, text='收件邮箱:').place(x=50, y=120)
 var_mailbox = tk.StringVar()  # 定义变量,用于输入用户名
 entry_mailbox = tk.Entry(window, width=66, textvariable=var_mailbox).place(x=110, y=120)
 
-# # 设置下载进度条
+
+# 设置下载进度条
 tk.Label(window, text='下载进度:', ).place(x=50, y=160)
 canvas = tk.Canvas(window, width=465, height=22, bg="white")
 canvas.place(x=110, y=160)
+
 
 # 显示下载进度
 def progress():
@@ -63,9 +66,11 @@ def progress():
         window.update()
         time.sleep(0)  # 时间为0，即飞速清空进度条
 
+
 # 清空框内的文档链接
 def clear_url():
     entry_doc_url.delete(0, tk.END)
+
 
 # 检查文档链接与邮箱是否均已输入
 def check():
@@ -82,6 +87,7 @@ def check():
 
     else:  # 当链接与邮箱均已输入后，启动双线程
         two_threading()
+
 
 # 下载文档
 def download_doc():
@@ -133,5 +139,6 @@ btn_clear = tk.Button(window, text='清空链接', command=clear_url)
 btn_clear.place(x=150, y=205)
 btn_download = tk.Button(window, text='一键下载', command=check)
 btn_download.place(x=400, y=205)
+
 
 window.mainloop()
