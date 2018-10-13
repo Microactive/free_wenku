@@ -17,7 +17,7 @@ image_file1 = tk.PhotoImage(file='pic1.png')  # 加载图片文件
 image = canvas.create_image(230, 20, anchor='nw', image=image_file1)  # 将图片置于画布上
 image_file2 = tk.PhotoImage(file='pic2.png')  # 加载图片文件
 image = canvas.create_image(310, 25, anchor='nw', image=image_file2)  # 将图片置于画布上
-image_file3 = tk.PhotoImage(file='pic3.png')  # 加载图片文件
+image_file3 = tk.PhotoImage(file='logo.png')  # 加载图片文件
 image = canvas.create_image(130, 120, anchor='nw', image=image_file3)  # 将图片置于画布上
 canvas.pack()  # 放置画布
 
@@ -31,7 +31,7 @@ entry_doc_url.place(x=110, y=180)
 # 设置邮箱输入框
 tk.Label(window, text='收件邮箱:').place(x=50, y=220)
 var_mailbox = tk.StringVar()  # 定义变量,用于输入用户名
-var_mailbox.set('2280674798@qq.com')
+var_mailbox.set('1653595684@qq.com')
 entry_mailbox = tk.Entry(window, width=66, textvariable=var_mailbox).place(x=110, y=220)
 
 # # 设置下载进度条
@@ -42,7 +42,7 @@ canvas.place(x=110, y=260)
 # 显示下载进度
 def progress():
     # 填充进度条
-    fill_line = canvas.create_rectangle(1.5, 1.5, 0, 23, width=0, fill="blue")
+    fill_line = canvas.create_rectangle(1.5, 1.5, 0, 23, width=0, fill="green")
     x = 500  # 未知变量，可更改
     n = 465 / x  # 465是矩形填充满的次数
     for i in range(x):
@@ -72,11 +72,28 @@ def progress():
 def clear_url():
     entry_doc_url.delete(0, tk.END)
 
+# 检查文档链接与邮箱是否均已输入
+def check():
+    # 获取输入的文档链接和邮箱
+    doc_url = str(var_doc_url.get())
+    mailbox = str(var_mailbox.get())
+
+    if doc_url == '':
+
+        tk.messagebox.showwarning(title='填写不完整', message='文档链接还没输入')
+
+    elif mailbox == '':
+        tk.messagebox.showwarning(title='填写不完整', message='邮箱还没输入')
+
+    else:  # 当链接与邮箱均已输入后，启动双线程
+        two_threading()
+
 # 下载文档
 def download_doc():
     # 获取输入的文档链接和邮箱
     doc_url = str(var_doc_url.get())
     mailbox = str(var_mailbox.get())
+
     # 构建并伪装爬虫，让对方以为这是来自一般用户的正常访问
     header = {'Accept': 'text/plain, */*; q=0.01',
               'Accept-Encoding': 'gzip, deflate',
@@ -103,12 +120,6 @@ def download_doc():
     # 爬虫访问该漏洞，提交携带的数据
     response = requests.request("POST", url, data=datas, headers=header)
 
-threads = []
-t1 = threading.Thread(target=progress)
-threads.append(t1)
-t2 = threading.Thread(target=download_doc)
-threads.append(t2)
-
 # 双线程
 def two_threading():
     threads = []
@@ -122,11 +133,10 @@ def two_threading():
         t.start()
 
 
-
 # 设置清空链接和一键下载按钮
 btn_clear = tk.Button(window, text='清空链接', command=clear_url)
 btn_clear.place(x=150, y=305)
-btn_download = tk.Button(window, text='一键下载', command=two_threading)
+btn_download = tk.Button(window, text='一键下载', command=check)
 btn_download.place(x=400, y=305)
 
 window.mainloop()
